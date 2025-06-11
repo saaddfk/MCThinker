@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameplay Analysis Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4 text-center">Upload and Analyze Your Gameplay</h1>
+
+        <div class="bg-white shadow-md rounded-lg p-6 mb-4">
+            <label for="videoUpload" class="block text-sm font-medium text-gray-700 mb-2">Upload Video (MP4, WebM):</label>
+            <input type="file" id="videoUpload" accept="video/mp4,video/webm" class="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-50 file:text-blue-700
+                hover:file:bg-blue-100
+            "/>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg p-6 mb-4">
+            <h2 class="text-xl font-semibold mb-2">Preview:</h2>
+            <video id="videoPreview" width="480" controls class="rounded"></video>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-2">Processing Progress:</h2>
+            <progress id="uploadProgress" value="0" max="100" class="w-full mb-2"></progress>
+            <div id="analysisStatus" class="text-sm text-gray-600"></div>
+            <!-- Initially, the progress bar can be styled to be hidden or less prominent until processing starts -->
+        </div>
+
+        <section id="dashboard" class="mt-8 p-4 border rounded-lg shadow-lg bg-white hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">Analysis Dashboard</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"> {/* Increased gap slightly */}
+                <div class="bg-blue-50 p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold text-blue-700">Fight Events</h3>
+                    <p id="statFightEvents" class="text-4xl font-bold text-blue-900 mt-1">0</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold text-green-700">Build Events</h3>
+                    <p id="statBuildEvents" class="text-4xl font-bold text-green-900 mt-1">0</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold text-yellow-700">Movement Activity</h3>
+                    <p id="statMovementActivity" class="text-4xl font-bold text-yellow-900 mt-1">0%</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold text-purple-700">PvP Frames</h3>
+                    <p id="statPvpFrames" class="text-4xl font-bold text-purple-900 mt-1">0%</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold text-indigo-700">Video Duration</h3>
+                    <p id="statVideoDuration" class="text-4xl font-bold text-indigo-900 mt-1">0s</p>
+                </div>
+                 <!-- Skill Score Card - Spanning more columns on larger screens if desired, or fitting in the flow -->
+                <div class="bg-teal-50 p-6 rounded-xl shadow-lg text-center sm:col-span-2 md:col-span-3 lg:col-span-5"> {/* Full width on smaller, spans across on larger */}
+                    <h3 class="text-xl font-semibold text-teal-700">Overall Skill Score</h3>
+                    <p id="statSkillScore" class="text-5xl font-bold text-teal-900 my-2">0</p>
+                    <p id="statSkillAssessment" class="text-lg text-teal-600 font-medium">Calculating...</p>
+                </div>
+                <!-- Recommendations Card -->
+                <div class="bg-lime-50 p-6 rounded-xl shadow-lg text-left sm:col-span-2 md:col-span-3 lg:col-span-5"> {/* Full width on smaller, spans across on larger */}
+                    <h3 class="text-xl font-semibold text-lime-700 mb-3">Recommendations</h3>
+                    <p id="textRecommendations" class="text-md text-lime-800 whitespace-pre-line">Analyzing for tips...</p> {/* whitespace-pre-line to respect newlines */}
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/js/videoProcessor.js"></script>
+    <script src="/js/gameAnalytics.js"></script>
+    <script src="/js/skillScorer.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
